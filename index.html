@@ -3,200 +3,219 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>المفردة الشاذة والارتباط والاختلاف - نموذج 7</title>
+    <title>حقيبة القدرات الماسية - أ/ عبدالعزيز الفيفي</title>
     <style>
-        :root { --primary: #2c3e50; --accent: #3498db; --danger: #e74c3c; --success: #27ae60; --bg: #f4f7f6; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg); margin: 0; padding: 15px; }
-        .container { max-width: 700px; margin: 20px auto; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border-top: 5px solid var(--accent); }
-        .header { text-align: center; margin-bottom: 20px; border-bottom: 2px solid #eee; padding-bottom: 15px; }
-        .timer { font-size: 1.6em; font-weight: bold; margin: 15px 0; text-align: center; transition: 0.3s; color: #2ecc71; }
-        .timer.warning { color: var(--danger); animation: blink 0.5s infinite; }
-        @keyframes blink { 50% { opacity: 0.3; } }
-        .question-box { background: #fff; padding: 20px; border-radius: 10px; }
-        .options { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
-        .opt-btn { padding: 15px; border: 2px solid #f0f0f0; border-radius: 10px; cursor: pointer; background: #fff; transition: 0.2s; font-size: 1.05em; text-align: right; }
-        .opt-btn:hover:not(:disabled) { border-color: var(--accent); background: #f0faff; }
-        .feedback { margin-top: 20px; padding: 18px; border-radius: 12px; display: none; text-align: right; line-height: 1.6; border-right: 6px solid; }
-        .feedback.correct { background: #e8f5e9; color: #2e7d32; border-color: #2e7d32; }
-        .feedback.wrong { background: #ffebee; color: #c62828; border-color: #c62828; }
-        .explanation-title { font-weight: bold; display: block; margin-bottom: 5px; font-size: 1.1em; }
-        .explanation-body { font-size: 0.95em; color: #444; }
-        .footer-stamp { color: #95a5a6; font-size: 0.85em; margin-top: 40px; border-top: 1px solid #eee; padding-top: 15px; text-align: center; line-height: 1.6; }
+        :root { 
+            --primary: #1a237e; --secondary: #37474f; --accent: #ffab00; 
+            --bg: #f4f7f6; --white: #ffffff; --correct: #2e7d32; --wrong: #c62828;
+        }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); display: flex; justify-content: center; padding: 20px; line-height: 1.7; color: #333; }
+        .quiz-card { background: var(--white); width: 100%; max-width: 950px; border-radius: 25px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); border-top: 15px solid var(--primary); padding: 30px; position: relative; }
+        .header { text-align: center; border-bottom: 2px solid #eee; margin-bottom: 25px; padding-bottom: 15px; }
+        
+        .info-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; position: sticky; top: 10px; z-index: 1000; }
+        .student-badge { background: #e8eaf6; color: var(--primary); padding: 10px 20px; border-radius: 50px; font-weight: bold; border: 2px solid var(--primary); font-size: 1rem; }
+        
+        .timer-container { background: var(--secondary); color: white; padding: 10px 25px; border-radius: 50px; font-weight: bold; font-size: 1.1rem; transition: all 0.3s ease; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        .timer-pulse { background: var(--wrong) !important; animation: pulse-animation 0.6s infinite alternate; transform: scale(1.1); }
+        @keyframes pulse-animation { from { transform: scale(1.1); } to { transform: scale(1.25); } }
+        
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0; }
+        .option { padding: 18px; border: 2px solid #f0f0f0; border-radius: 15px; cursor: pointer; transition: 0.3s; font-weight: bold; background: #fafafa; font-size: 1.1rem; text-align: center; }
+        .option:hover { border-color: var(--primary); background: #fdf7ff; transform: translateY(-2px); }
+        .correct-opt { background: var(--correct) !important; color: white; border-color: var(--correct) !important; }
+        .wrong-opt { background: var(--wrong) !important; color: white; border-color: var(--wrong) !important; }
+        
+        .feedback-box { margin-top: 20px; padding: 25px; border-radius: 15px; background: #fffde7; border-right: 10px solid var(--accent); display: none; font-size: 1.1rem; }
+        .btn { background: var(--secondary); color: white; padding: 16px 45px; border: none; border-radius: 12px; cursor: pointer; font-size: 1.2rem; font-weight: bold; transition: 0.3s; }
+        .btn:hover { background: var(--primary); }
+
+        .result-table { width: 100%; border-collapse: collapse; margin-top: 25px; background: white; }
+        .result-table th { background: var(--primary); color: white; padding: 12px; }
+        .result-table td { border: 1px solid #ddd; padding: 12px; text-align: center; }
+        
         .hidden { display: none; }
-        #next-btn { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer; margin-top: 15px; font-weight: bold; font-size: 1.1em; }
-        .summary-item { margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
-        .locked-msg { text-align: center; padding: 40px; color: var(--primary); }
+        .locked { text-align: center; color: red; padding: 50px; border: 5px solid red; border-radius: 20px; }
     </style>
 </head>
-<body>
+<body id="main-body">
 
-<div class="container">
+<div class="quiz-card" id="quiz-container">
     <div class="header">
-        <h2 style="margin:0; color:var(--primary);">المفردة الشاذة والارتباط والاختلاف نموذج 7 📝✨</h2>
-        <p style="margin:5px 0; color:#7f8c8d;">أ / عبد العزيز الفيفي - ثانوية الأمير عبد المجيد 🏫</p>
+        <h3 id="author-name">✨ أ / عبدالعزيز الفيفي - ثانوية الأمير عبدالمجيد 🎓</h3>
+        <h2 id="quiz-title">اختبار القدرات اللفظي - النموذج (7)</h2>
     </div>
 
-    <div id="locked-screen" class="hidden">
-        <div class="locked-msg">
-            <h2>لقد قمت بإنهاء هذا الاختبار مسبقاً، جرب نموذجاً آخر 🌟😊</h2>
+    <div id="start-page" style="text-align: center;">
+        <p style="font-size: 1.2rem; margin-bottom: 20px;">⏱️ 45 ثانية لكل سؤال | 🔀 خلط عشوائي كامل | 💡 تحليل منطقي موسع</p>
+        <input type="text" id="studentNameInput" placeholder="أدخل اسمك الثلاثي لبدء التحدي..." style="width: 75%; padding: 15px; border-radius: 10px; border: 2px solid #ccc; text-align: center; font-size: 1.1rem; margin-bottom: 20px;">
+        <br><button class="btn" onclick="startQuizAction()">ابدأ التحدي 🚀</button>
+    </div>
+
+    <div id="quiz-page" class="hidden">
+        <div class="info-bar">
+            <div id="current-student-display" class="student-badge"></div>
+            <div id="timer-box" class="timer-container">⏳ المتبقي: <span id="timer-val">45</span> ثانية</div>
+        </div>
+        
+        <div id="progress-text" style="font-weight: bold; color: var(--primary); margin-bottom: 10px;"></div>
+        <div id="question-display" style="font-size: 1.8rem; text-align: center; margin: 15px 0; font-weight: 800; color: var(--primary); background: #f9f9f9; padding: 25px; border-radius: 20px; border: 1px solid #eee;"></div>
+        <div id="options-container" class="options-grid"></div>
+        
+        <div id="feedback-display" class="feedback-box"></div>
+        
+        <div style="text-align: center; margin-top: 30px;">
+            <button id="next-btn" class="btn hidden" onclick="loadNextQuestion()">السؤال التالي ⮕</button>
         </div>
     </div>
 
-    <div id="login-screen">
-        <h3>يرجى إدخال اسمك لبدء التحدي:</h3>
-        <input type="text" id="student-name" placeholder="اسمك الثلاثي هنا..." style="width:95%; padding:12px; border-radius:8px; border:1px solid #ddd; font-size:1em;">
-        <button onclick="startQuiz()" style="width:100%; padding:14px; background:var(--accent); color:white; border:none; border-radius:8px; cursor:pointer; margin-top:15px; font-weight:bold;">ابدأ الاختبار 🚀</button>
-    </div>
-
-    <div id="quiz-screen" class="hidden">
-        <div style="display:flex; justify-content:space-between; color:var(--danger); font-weight:bold; margin-bottom:10px;">
-            <span>👤 <span id="display-name"></span></span>
-            <span>📍 سؤال <span id="q-num">1</span>/25</span>
+    <div id="result-page" class="hidden">
+        <div style="text-align: center; padding: 30px; background: #e8eaf6; border-radius: 20px; border: 3px solid var(--primary); margin-bottom: 30px;">
+            <h1 id="score-display" style="color: var(--primary); margin:0; font-size: 3rem;"></h1>
+            <h2 id="final-student-name" style="color: var(--secondary); margin-top: 15px;"></h2>
         </div>
-        <div id="timer-display" class="timer">⏳ المتبقي: <span id="time-left">45</span> ثانية</div>
-        
-        <div class="question-box">
-            <div id="q-text" style="font-size:1.2em; line-height:1.5; color:var(--primary); font-weight:bold;"></div>
-            <div id="options-box" class="options"></div>
-        </div>
-        
-        <div id="feedback" class="feedback"></div>
-        <button id="next-btn" class="hidden" onclick="incrementAndLoad()">انتقل للسؤال التالي ⬅️</button>
-    </div>
-
-    <div id="result-screen" class="hidden">
-        <h2 style="color:var(--accent)">انتهى الاختبار بنجاح! 🎉</h2>
-        <h3 id="score-text"></h3>
-        <hr>
-        <h4>مراجعة الإجابات لتعزيز الفهم:</h4>
-        <div id="summary-list" style="text-align:right; max-height:400px; overflow-y:auto; border:1px solid #eee; padding:15px; border-radius:8px;"></div>
-        
-        <div class="footer-stamp">
-            نتمنى لك مزيداً من التوفيق والنجاح المستمر 🌟<br>
-            أ / عبد العزيز الفيفي - ثانوية الأمير عبد المجيد 🎓<br>
-            <small>جميع الحقوق محفوظة 2026 ©</small>
+        <table class="result-table">
+            <thead>
+                <tr>
+                    <th>السؤال</th>
+                    <th>إجابتك</th>
+                    <th>الصحيحة</th>
+                    <th>التحليل المنطقي الموسع</th>
+                </tr>
+            </thead>
+            <tbody id="summary-body"></tbody>
+        </table>
+        <div style="text-align: center; margin-top: 40px;">
+            <p style="font-weight: bold; color: var(--primary);">✨ أ / عبد العزيز الفيفي - ثانوية الأمير عبدالمجيد 🎓</p>
+            <button class="btn" onclick="location.reload()">إعادة الاختبار 🔀</button>
         </div>
     </div>
 </div>
 
 <script>
-    const questions = [
-        { q: "ارتباط: ما الكلمة المرتبطة بـ (عطش):", options: ["نوم", "ماء", "طعام", "برد"], correct: 1, hint: "الماء هو الحاجة الأساسية لإزالة العطش، فالعلاقة هنا حاجة واحتياج." },
-        { q: "المفردة الشاذة: حدد الكلمة المختلفة:", options: ["البرق", "الرعد", "المطر", "السيارة"], correct: 3, hint: "البرق والرعد والمطر ظواهر طبيعية، أما السيارة فهي من صنع الإنسان." },
-        { q: "أي الكلمات تختلف في صنفها: (سباحة، ركض، تفكير، قفز)؟", options: ["سباحة", "ركض", "تفكير", "قفز"], correct: 2, hint: "السباحة والركض والقفز مهارات حركية بدنية، أما التفكير فهو عملية عقلية." },
-        { q: "ارتباط: ما الكلمة المرتبطة بـ (رمل):", options: ["بحر", "سماء", "نجم", "غيمة"], correct: 0, hint: "الرمل يرتبط مكانياً بالبحر (الشاطئ) أو الصحراء، وأقرب الخيارات هو البحر." },
-        { q: "المفردة الشاذة: حدد الكلمة المختلفة:", options: ["الميزان", "المسطرة", "الترمومتر", "اللوحة"], correct: 3, hint: "الميزان والمسطرة والترمومتر أدوات قياس، أما اللوحة فهي وسيلة رسم أو عرض." },
-        { q: "أي الكلمات تختلف: (شاحنة، سفينة، غواصة، زورق)؟", options: ["شاحنة", "سفينة", "غواصة", "زورق"], correct: 0, hint: "السفينة والغواصة والزورق وسائل نقل بحرية، أما الشاحنة فهي وسيلة نقل برية." },
-        { q: "ارتباط: ما الكلمة المرتبطة بـ (فندق):", options: ["مدرسة", "مستشفى", "غرفة", "حديقة"], correct: 2, hint: "الفندق يتكون من مجموعة غرف، فالعلاقة هي (كل إلى جزء)." },
-        { q: "المفردة الشاذة: حدد الكلمة المختلفة:", options: ["الصين", "اليابان", "كوريا", "البرازيل"], correct: 3, hint: "الصين واليابان وكوريا دول تقع في قارة آسيا، أما البرازيل فتقع في أمريكا الجنوبية." },
-        { q: "أي الكلمات تختلف: (حليب، عصير، ماء، عسل)؟", options: ["حليب", "عصير", "ماء", "عسل"], correct: 3, hint: "الحليب والعصير والماء سوائل خفيفة القوام، أما العسل فيتميز بلزوجته العالية واختلاف طبيعته." },
-        { q: "ارتباط: (مكتبة):", options: ["كتب", "أشجار", "أدوات", "طائرات"], correct: 0, hint: "المكتبة هي المكان المخصص لحفظ وتصنيف الكتب." },
-        { q: "المفردة الشاذة: حدد الكلمة المختلفة:", options: ["بصل", "ثوم", "فجل", "تفاح"], correct: 3, hint: "البصل والثوم والفجل من الخضروات، أما التفاح فهو من الفواكه." },
-        { q: "أي الكلمات تختلف: (فرح، سرور، بهجة، حزن)؟", options: ["فرح", "سرور", "بهجة", "حزن"], correct: 3, hint: "الفرح والسرور والبهجة مترادفات تدل على السعادة، أما الحزن فهو الضد." },
-        { q: "ارتباط: (نوم):", options: ["مشي", "فراش", "أكل", "دراسة"], correct: 1, hint: "الفراش هو المكان المخصص للنوم، فالعلاقة مكانية." },
-        { q: "المفردة الشاذة: حدد الكلمة المختلفة:", options: ["مشرط", "مقص", "إبرة", "قلم"], correct: 3, hint: "المشرط والمقص والإبرة أدوات طبية أو جراحية، أما القلم فهو أداة كتابة." },
-        { q: "أي الكلمات تختلف: (صقر، نسر، بومة، حمامة)؟", options: ["صقر", "نسر", "بومة", "حمامة"], correct: 3, hint: "الصقر والنسر والبومة طيور جارحة، أما الحمامة فهي طائر أليف." },
-        { q: "ارتباط: (خاتم):", options: ["أذن", "إصبع", "عنق", "رأس"], correct: 1, hint: "الخاتم يلبس في الإصبع، فالعلاقة مكانية (حلي وموضعها)." },
-        { q: "المفردة الشاذة: حدد الكلمة المختلفة:", options: ["الخشب", "الحديد", "النحاس", "الألومنيوم"], correct: 0, hint: "الحديد والنحاس والألومنيوم معادن، أما الخشب فمادة نباتية." },
-        { q: "أي الكلمات تختلف: (أب، أم، ابن، صديق)؟", options: ["أب", "أم", "ابن", "صديق"], correct: 3, hint: "الأب والأم والابن تربطهم علاقة قرابة دموية (عائلة)، أما الصديق فعلاقة اجتماعية." },
-        { q: "ارتباط: (غصن):", options: ["جبل", "شجرة", "نهر", "طريق"], correct: 1, hint: "الغصن جزء من الشجرة، فالعلاقة (جزء من كل)." },
-        { q: "المفردة الشاذة: حدد الكلمة المختلفة:", options: ["المذياع", "التلفاز", "الصحيفة", "الهاتف"], correct: 2, hint: "المذياع والتلفاز والهاتف أجهزة إلكترونية، أما الصحيفة فوسيلة مطبوعة ورقية." },
-        { q: "أي الكلمات تختلف: (مربع، مستطيل، معين، دائرة)؟", options: ["مربع", "مستطيل", "معين", "دائرة"], correct: 3, hint: "المربع والمستطيل والمعين أشكال لها أضلاع مستقيمة، أما الدائرة فمنحنى مغلق." },
-        { q: "ارتباط: (سائق):", options: ["سيارة", "ملعب", "مطبخ", "غابة"], correct: 0, hint: "السائق مرتبط بقيادة السيارة، فالعلاقة مهنة بآلتها." },
-        { q: "المفردة الشاذة: حدد الكلمة المختلفة:", options: ["سورة", "آية", "جزء", "قصيدة"], correct: 3, hint: "السورة والآية والجزء من مكونات القرآن الكريم، أما القصيدة فمن مكونات الشعر." },
-        { q: "أي الكلمات تختلف: (عين، أذن، أنف، يد)؟", options: ["عين", "أذن", "أنف", "يد"], correct: 3, hint: "العين والأذن والأنف توجد في الوجه (الرأس)، أما اليد فمن الأطراف." },
-        { q: "ارتباط: (قفل):", options: ["نافذة", "مفتاح", "جدار", "سقف"], correct: 1, hint: "القفل لا يفتح إلا بالمفتاح، فالعلاقة تلازمية وظيفية." }
+    // كود حماية الملكية الفكرية
+    (function protect() {
+        const teacher = "عبدالعزيز الفيفي";
+        setInterval(() => {
+            const auth = document.getElementById('author-name');
+            if (!auth || !auth.innerText.includes(teacher)) {
+                document.getElementById('main-body').innerHTML = '<div class="locked"><h1>⚠️ خرق حماية الملكية</h1></div>';
+            }
+        }, 2000);
+    })();
+
+    // مصفوفة الأسئلة المستخرجة من نموذج 7
+    const masterPool = [
+        { q: "ارتباط: ما الكلمة الأكثر صلة بكلمة (عطر):", c: "رائحة", a: ["زجاجة", "رائحة", "ورد", "متجر"], r: "الرائحة هي الصفة الجوهرية والناتج الأساسي للعطر." },
+        { q: "المفردة الشاذة: حدد الكلمة المختلفة:", c: "محرم", a: ["سبت", "أحد", "محرم", "إثنين"], r: "السبت والأحد والإثنين أيام أسبوع، أما محرم فهو شهر هجري." },
+        { q: "اختلاف: أي مما يلي يختلف في تصنيفه: (ياسمين، فلفل، نرجس، نسرين)؟", c: "فلفل", a: ["ياسمين", "فلفل", "نرجس", "نسرين"], r: "الياسمين والنرجس والنسرين أنواع من الزهور، بينما الفلفل من الخضروات." },
+        { q: "ارتباط: ما الكلمة المرتبطة بـ (شتاء):", c: "برد", a: ["مطر", "دفء", "صوف", "برد"], r: "البرد هو الحالة الجوية الأساسية المرتبطة بالشتاء في القدرات." },
+        { q: "المفردة الشاذة: حدد الكلمة الشاذة:", c: "سبورة", a: ["قلم", "كتاب", "سبورة", "طاولة"], r: "القلم والكتاب والطاولة أدوات ملموسة يحملها الطالب، أما السبورة فهي وسيلة تعليمية ثابتة." },
+        { q: "اختلاف: أي من المدن يختلف: (مكة، المدينة، القدس، دبي)؟", c: "دبي", a: ["مكة", "المدينة", "القدس", "دبي"], r: "مكة والمدينة والقدس مدن مقدسة، بينما دبي مدينة سياحية وتجارية." },
+        { q: "ارتباط: كلمة (رئات) مرتبطة بـ:", c: "تنفس", a: ["هضم", "تنفس", "دوران", "إخراج"], r: "الوظيفة الحيوية المرتبطة بالرئات هي التنفس." },
+        { q: "المفردة الشاذة: حدد المفردة الشاذة:", c: "أبو جهل", a: ["خالد بن الوليد", "حمزة بن عبدالمطلب", "عمرو بن العاص", "أبو جهل"], r: "خالد وحمزة وعمرو صحابة كرام، أما أبو جهل فمات على الشرك." },
+        { q: "اختلاف: أي الأرقام يختلف: (3، 5، 7، 9)؟", c: "9", a: ["3", "5", "7", "9"], r: "3 و5 و7 أعداد أولية، بينما 9 عدد غير أولي لأنه يقبل القسمة على 3." },
+        { q: "ارتباط: كلمة (تلفاز) مرتبطة بـ:", c: "مشاهدة", a: ["قراءة", "استماع", "مشاهدة", "كتابة"], r: "الحاسة والنشاط الأساسي المرتبط بالتلفاز هو المشاهدة." },
+        { q: "المفردة الشاذة: حدد المفردة المختلفة:", c: "أرز", a: ["فول", "عدس", "حمص", "أرز"], r: "الفول والعدس والحمص بقوليات، أما الأرز فمن الحبوب." },
+        { q: "اختلاف: أي الكلمات يختلف: (صارم، قاطع، بتار، مهند)؟", c: "مهند", a: ["صارم", "قاطع", "بتار", "مهند"], r: "صارم وقاطع وبتار هي صفات تدل على حدة السيف، أما مهند فهو اسم من أسماء السيف نفسه." },
+        { q: "ارتباط: ما الكلمة المرتبطة بـ (نوم):", c: "ليل", a: ["سرير", "وسادة", "حلم", "ليل"], r: "الارتباط الزماني التقليدي للنوم في اختبارات القدرات هو الليل." },
+        { q: "المفردة الشاذة: حدد المفردة الشاذة:", c: "طبيب", a: ["معلم", "طالب", "فصل", "طبيب"], r: "المعلم والطالب والفصل أركان العملية التعليمية، بينما الطبيب ينتمي للمجال الصحي." },
+        { q: "ارتباط: كلمة (مخالب) مرتبطة بـ:", c: "صقر", a: ["عصفور", "صقر", "حمامة", "هدهد"], r: "المخالب مرتبطة وظيفياً بالطيور الجارحة التي تصطاد بها مثل الصقر." },
+        { q: "اختلاف: أي مما يلي يختلف: (مستطيل، مربع، مثلث، دائرة)؟", c: "دائرة", a: ["مستطيل", "مربع", "مثلث", "دائرة"], r: "المستطيل والمربع والمثلث مضلعات ذات أضلاع مستقيمة، بينما الدائرة منحنى مغلق." },
+        { q: "المفردة الشاذة: حدد المفردة الشاذة:", c: "درع", a: ["سيف", "خنجر", "رمح", "درع"], r: "السيف والخنجر والرمح أدوات هجوم، بينما الدرع أداة دفاع." },
+        { q: "ارتباط: كلمة (غيمة) مرتبطة بـ:", c: "مطر", a: ["شمس", "مطر", "رعد", "برق"], r: "المطر هو الناتج المباشر والمرتبط وظيفياً بالغيمة." },
+        { q: "المفردة الشاذة: الكلمة المختلفة هي:", c: "عنكبوت", a: ["نحلة", "نملة", "ذبابة", "عنكبوت"], r: "النحلة والنملة والذبابة حشرات (6 أرجل)، بينما العنكبوت من العنكبوتيات (8 أرجل)." },
+        { q: "اختلاف: أي الدول يختلف: (السعودية، الكويت، عمان، مصر)؟", c: "مصر", a: ["السعودية", "الكويت", "عمان", "مصر"], r: "السعودية والكويت وعمان دول خليجية آسيوية، أما مصر فتقع في أفريقيا." },
+        { q: "ارتباط: كلمة (مصباح) مرتبطة بـ:", c: "ضوء", a: ["نار", "كهرباء", "زجاج", "ضوء"], r: "الهدف والارتباط الوظيفي الأساسي للمصباح هو إنتاج الضوء." },
+        { q: "المفردة الشاذة: حدد الكلمة الشاذة:", c: "كعبة", a: ["كعبة", "محراب", "مئذنة", "منبر"], r: "المحراب والمئذنة والمنبر أجزاء معمارية داخل المسجد، أما الكعبة فبناء مستقل مقدس." },
+        { q: "ارتباط: كلمة (فرشاة) مرتبطة بـ:", c: "أسنان", a: ["ماء", "صابون", "أسنان", "وجه"], r: "الارتباط الوظيفي والأقوى للفرشاة في سياق العناية هو الأسنان." },
+        { q: "اختلاف: أي الكلمات تختلف: (هاتف، مذياع، حاسب، قلم)؟", c: "قلم", a: ["هاتف", "مذياع", "حاسب", "قلم"], r: "الهاتف والمذياع والحاسب أجهزة تقنية، أما القلم أداة يدوية بسيطة." },
+        { q: "المفردة الشاذة: حدد المفردة الشاذة:", c: "باهت", a: ["أبيض", "أصفر", "أحمر", "باهت"], r: "الأبيض والأصفر والأحمر ألوان محددة، أما باهت فهي وصف لدرجة اللون." }
     ];
 
-    let currentIdx = 0, score = 0, timer, studentName = "", userAnswers = [];
-    const STORAGE_KEY = 'qudrat_model_3_v1';
+    let currentIdx = 0, score = 0, timer, timeLeft = 45, logs = [], activeQs = [], sName = "";
 
-    window.onload = function() {
-        if (localStorage.getItem(STORAGE_KEY)) {
-            document.getElementById('login-screen').classList.add('hidden');
-            document.getElementById('locked-screen').classList.remove('hidden');
+    function shuffle(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
         }
-    };
+        return arr;
+    }
 
-    function startQuiz() {
-        studentName = document.getElementById('student-name').value.trim();
-        if (!studentName) { alert("لطفاً أدخل اسمك!"); return; }
-        document.getElementById('login-screen').classList.add('hidden');
-        document.getElementById('quiz-screen').classList.remove('hidden');
-        document.getElementById('display-name').innerText = studentName;
+    function startQuizAction() {
+        sName = document.getElementById('studentNameInput').value;
+        if (!sName.trim()) { alert("يرجى كتابة اسمك الثلاثي"); return; }
+        activeQs = shuffle([...masterPool]);
+        document.getElementById('current-student-display').innerText = "المتحدي: " + sName;
+        document.getElementById('start-page').classList.add('hidden');
+        document.getElementById('quiz-page').classList.remove('hidden');
         loadQuestion();
     }
 
-    function loadQuestion() {
-        if (currentIdx >= questions.length) { endQuiz(); return; }
+    function startTimer() {
         clearInterval(timer);
-        let time = 45;
-        const timerText = document.getElementById('time-left');
-        const timerDiv = document.getElementById('timer-display');
-        timerText.innerText = time;
-        timerDiv.classList.remove('warning');
-        document.getElementById('q-num').innerText = currentIdx + 1;
-        const f = document.getElementById('feedback');
-        f.style.display = 'none';
-        f.className = 'feedback';
-        document.getElementById('next-btn').classList.add('hidden');
-        const q = questions[currentIdx];
-        document.getElementById('q-text').innerText = q.q;
-        const box = document.getElementById('options-box');
-        box.innerHTML = '';
-        q.options.forEach((opt, i) => {
-            const b = document.createElement('button');
-            b.className = 'opt-btn';
-            b.innerText = `${["أ", "ب", "ج", "د"][i]}) ${opt}`;
-            b.onclick = () => checkAnswer(i);
-            box.appendChild(b);
-        });
+        timeLeft = 45;
+        const box = document.getElementById('timer-box');
+        const val = document.getElementById('timer-val');
+        box.classList.remove('timer-pulse');
+        val.innerText = timeLeft;
         timer = setInterval(() => {
-            time--;
-            timerText.innerText = time;
-            if (time <= 5) timerDiv.classList.add('warning');
-            if (time <= 0) { clearInterval(timer); checkAnswer(-1); }
+            timeLeft--;
+            val.innerText = timeLeft;
+            if (timeLeft <= 5) box.classList.add('timer-pulse');
+            if (timeLeft <= 0) { clearInterval(timer); handleAns(null, null); }
         }, 1000);
     }
 
-    function checkAnswer(idx) {
-        clearInterval(timer);
-        const q = questions[currentIdx];
-        const f = document.getElementById('feedback');
-        f.style.display = 'block';
-        const isCorrect = (idx === q.correct);
-        if (isCorrect) score++;
-        f.classList.add(isCorrect ? 'correct' : 'wrong');
-        let statusText = isCorrect ? "✅ إجابة متميزة وصحيحة!" : "❌ عذراً، الإجابة غير صحيحة";
-        if(idx === -1) statusText = "⏰ انتهى وقت السؤال!";
-        f.innerHTML = `
-            <span class="explanation-title">${statusText}</span>
-            <div class="explanation-body">
-                <b>الإجابة الصحيحة:</b> ${["أ", "ب", "ج", "د"][q.correct]}) ${q.options[q.correct]}<br>
-                <b>توضيح تعليمي:</b> ${q.hint}
-            </div>
-        `;
-        userAnswers.push({ q: q.q, user: idx===-1?"لم يحل":q.options[idx], correct: q.options[q.correct], status: isCorrect, hint: q.hint });
-        document.querySelectorAll('.opt-btn').forEach(b => b.disabled = true);
-        document.getElementById('next-btn').classList.remove('hidden');
+    function loadQuestion() {
+        if (currentIdx >= activeQs.length) { endQuiz(); return; }
+        const q = activeQs[currentIdx];
+        document.getElementById('progress-text').innerText = `سؤال ${currentIdx + 1} من ${activeQs.length}`;
+        document.getElementById('question-display').innerText = q.q;
+        document.getElementById('feedback-display').style.display = 'none';
+        document.getElementById('next-btn').classList.add('hidden');
+        const box = document.getElementById('options-container');
+        box.innerHTML = '';
+        shuffle([...q.a]).forEach(opt => {
+            const div = document.createElement('div');
+            div.className = 'option';
+            div.innerText = opt;
+            div.onclick = () => handleAns(opt, div);
+            box.appendChild(div);
+        });
+        startTimer();
     }
 
-    function incrementAndLoad() { currentIdx++; loadQuestion(); }
+    function handleAns(sel, el) {
+        clearInterval(timer);
+        document.getElementById('timer-box').classList.remove('timer-pulse');
+        const q = activeQs[currentIdx];
+        const opts = document.querySelectorAll('.option');
+        opts.forEach(o => o.onclick = null);
+        let isCorrect = (sel === q.c);
+        if (isCorrect) { if(el) el.classList.add('correct-opt'); score++; }
+        else { if(el) el.classList.add('wrong-opt'); opts.forEach(o => { if(o.innerText === q.c) o.classList.add('correct-opt'); }); }
+        
+        const fb = document.getElementById('feedback-display');
+        fb.style.display = 'block';
+        fb.innerHTML = `<strong>💡 التحليل المنطقي الموسع:</strong> ${q.r}<br><br><small>✨ أ / عبدالعزيز الفيفي - ثانوية الأمير عبدالمجيد 🎓</small>`;
+        
+        document.getElementById('next-btn').classList.remove('hidden');
+        logs.push({ q: q.q, user: sel || "انتهى الوقت ⏰", correct: q.c, r: q.r, isCorrect });
+    }
+
+    function loadNextQuestion() { currentIdx++; loadQuestion(); }
 
     function endQuiz() {
-        localStorage.setItem(STORAGE_KEY, 'true');
-        document.getElementById('quiz-screen').classList.add('hidden');
-        document.getElementById('result-screen').classList.remove('hidden');
-        document.getElementById('score-text').innerText = `النتيجة النهائية: ${score} من 25 درجة 🏆`;
-        let html = "";
-        userAnswers.forEach((ans, i) => {
-            html += `<div class="summary-item">
-                <b>س${i+1}:</b> ${ans.q}<br>
-                <span style="color:${ans.status?'green':'red'}">إجابتك: ${ans.user}</span> | <b>الصح: ${ans.correct}</b>
-                <div style="font-size:0.85em; color:#666; margin-top:4px;">💡 ${ans.hint}</div>
-            </div>`;
+        document.getElementById('quiz-page').classList.add('hidden');
+        document.getElementById('result-page').classList.remove('hidden');
+        document.getElementById('score-display').innerText = `${score} / ${activeQs.length}`;
+        document.getElementById('final-student-name').innerText = `المتحدي: ${sName}`;
+        const tbody = document.getElementById('summary-body');
+        logs.forEach(l => {
+            tbody.innerHTML += `<tr><td>${l.q}</td><td style="color:${l.isCorrect ? 'green':'red'}">${l.user}</td><td style="color:green; font-weight:bold">${l.correct}</td><td style="text-align:right">${l.r}</td></tr>`;
         });
-        document.getElementById('summary-list').innerHTML = html;
     }
 </script>
 </body>
